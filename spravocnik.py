@@ -124,7 +124,27 @@ class Spravochnik:
         for row in self.buffer:
             print(row[0] + ' ' + row[1] + ' ' + row[2])
 
-    def _add_number(self, name: str, phone: str | int, comment: str):
+    def _add_number(self, name: str, phone: str | int, comment: str)->None:
+        """
+        Функция делает следующие действия:
+        1. Проверяет значения name и phone  на пустую строку
+        2. Добавляет введеные значения в буфер
+        3. Инкриментит значение id
+        4. Сохраняет id  в файл
+        5. Сохраняет значения в файл
+
+        :param name: Вводим имя, не может быть пустым
+        :param phone: Вводим Телефон, не может быть пустым
+        :param comment:  Вводим комментарий
+        :return: Функция возвращает None
+        """
+        if name == "":
+            print("Имя не может быть пустым")
+            return
+        if phone == "":
+            print("Телефон не может быть пустым")
+            return
+
         self.buffer.append([self.id, name, phone, comment])
         self.id += 1
         self._keep_id()
