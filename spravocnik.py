@@ -4,7 +4,11 @@ from pathlib import Path
 
 class Spravochnik:
     def __init__(self, filename):
+        """
+        Инициируем справочник
 
+        :param filename: Имя файла который будет использовать справочник
+        """
         self.buffer = []
         self.filename = filename
         if self._check_exist_file() == False:
