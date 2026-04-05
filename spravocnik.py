@@ -40,7 +40,20 @@ class Spravochnik:
 
                 self.id = int(self.buffer[-1][0]) + 1
 
-    def _update_contact(self):
+    def _update_contact(self) -> None:
+        """
+        Функция апдейта контакта
+        Принимаем пользовательские данные с клавиатуры:
+        1) id  контакта
+        2) Имя на которое нужно изменить
+        3) Телефон на который нужно изменить
+        4) Комментарий на котороый нужно изменить
+        Если вместо имени, телефона или комментария вводится пустая строка, то
+        изменения для этого значения не вносятся
+        Сохранение происходит в буфер и в файл
+
+        :return:
+        """
         print("Введите id контакта для изменения")
         id = input()
         list_of_ids = []
@@ -145,7 +158,7 @@ class Spravochnik:
             print("Телефон не может быть пустым")
             return
 
-        self.buffer.append([self.id, name, phone, comment])
+        self.buffer.append([str(self.id), name, phone, comment])
         self.id += 1
         self._keep_id()
         self._save_to_csv()

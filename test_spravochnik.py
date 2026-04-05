@@ -51,7 +51,7 @@ def prepare_data(create_test_object):
 def test_add_number(cleaning, name, phone, comment):
     test = Spravochnik(test_filename)
     test._add_number(name,phone,comment)
-    assert test.buffer[0][0] == 1
+    assert test.buffer[0][0] == '1'
     assert test.buffer[0][1] == name
     assert test.buffer[0][2] == phone
     assert test.buffer[0][3] == comment
@@ -69,10 +69,10 @@ def test_add_number_negative(cleaning, name, phone, comment):
     assert result == None
 
 @pytest.mark.parametrize("id,new_name,new_phone,new_comment",[
-    (1,"Vasya","452","changed"),
-    (2,"Dima","555","changed"),
-    (3,"Alex","333","changed"),
-    (4,"Change","999","changed")
+    ("1","Vasya","452","changed"),
+    ("2","Dima","555","changed"),
+    ("3","Alex","333","changed"),
+    ("4","Change","999","changed")
 
 ])
 def test_update_number(cleaning,prepare_data,id,new_name,new_phone,new_comment):
@@ -92,7 +92,7 @@ def test_update_number(cleaning,prepare_data,id,new_name,new_phone,new_comment):
     """
     with patch("builtins.input",side_effect=[id,new_name,new_phone,new_comment]):
         prepare_data._update_contact()
-    index = id -1
+    index = int(id) -1
     assert prepare_data.buffer[index][1] == new_name
     assert prepare_data.buffer[index][2] == new_phone
     assert prepare_data.buffer[index][3] == new_comment
