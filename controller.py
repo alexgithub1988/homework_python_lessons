@@ -35,7 +35,8 @@ class Controller:
         contacts = self.model.all_contacts()
         self.view.show_all_contacts(contacts)
 
-    def run(self):
+    def run(self) -> None:
+        """Метод для запуска """
         self.view.show_menu()
         choice = self.view.get_choice()
         if choice == '1':
