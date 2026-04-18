@@ -37,14 +37,25 @@ class Controller:
 
     def run(self) -> None:
         """Метод для запуска """
-        self.view.show_menu()
-        choice = self.view.get_choice()
-        if choice == '1':
-            contacts = self.model.all_contacts()
-            self.view.show_all_contacts(contacts)
-        elif choice == '2':
-            information = self.add()
-            self.view.show_message(information)
-        elif choice not in ['1','2']:
-            print('Действие выбрано неверно')
+        while True:
+            self.view.show_menu()
+            choice = self.view.get_choice()
+
+            if choice == '1':
+                contacts = self.model.all_contacts()
+                self.view.show_all_contacts(contacts)
+            elif choice == '2':
+                information = self.add()
+                self.view.show_message(information)
+            elif choice == '3':
+                id = self.view.delete_contact()
+                msg = self.model._delete_contact(id)
+                self.view.show_message(msg)
+
+            elif choice == '4':
+                break
+            elif choice not in ['1','2','3','4']:
+                print('Действие выбрано неверно')
+
+
 

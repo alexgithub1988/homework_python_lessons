@@ -7,7 +7,8 @@ class View:
         """
         print("1.Показать все")
         print("2.Добавить контакт")
-        print("3 Выйти")
+        print("3.Удалить контакт")
+        print("4.Выйти ")
 
     @staticmethod
     def get_choice():
@@ -62,5 +63,14 @@ class View:
         for item in contacts:
             print(f'{item[0]} - {item[1]} - {item[2]} - {item[3]}')
 
+    @staticmethod
+    def delete_contact() -> None:
+        id = input("Введите id удаляемого контакта")
+        try:
+            temp = int(id)
+            del temp
+            return id
+        except:
+            print("Нужно ввести числовое значение")
 
 

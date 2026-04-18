@@ -9,7 +9,7 @@ class Model:
 
         Логика пока что следующая
         1.Инициализируем имя файла
-        2.Закидываем в контакты заголовок(header)
+        2.Создаем буфер с контактами
         3.Если файл не существует устанавливаем переменную с id  в 1
         4 Далее (файл не существует) проверяем что имя файла передано
          в csv формате и если да
@@ -18,19 +18,29 @@ class Model:
            и записываем в него хедер
         если нет:
            поднимаем исключение
+        Если файл существуют проходимся по нему циклом и добавляем в лист с контактами
 
         :param filename:
         """
         self.filename = filename
-        self.contacts = [['id','name','phone','contacts']]
-        if self._check_exist_file() == False:
+        self.contacts = []
+        if not self._check_exist_file():
             self.next_id = 1
-            if self._check_csv_format() == True:
+            if self._check_csv_format():
                 with open(self.filename, 'w', encoding='utf-8', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow(["Id", "name", "phone", "comment"])
+                    writer.writerow(["id", "name", "phone", "comment"])
             else:
                 raise Exception('Формат файла не csv')
+        else:
+            if self._check_csv_format():
+                reader = self._reader()
+                if reader[-1][0] == 'id' :
+                    self.next_id = 1
+                else:
+                    self.next_id = int(reader[-1][0])
+                for row in reader:
+                    self.contacts.append(row)
 
 
     def add_contact(self,name:str,phone:str,comment:str ) -> int:
@@ -38,16 +48,17 @@ class Model:
         Метод получает параметры для добавления в виде строк (получаем значения через input())
         Добовляем список значений в контакты
         инкриментим id
-        возрващаем значение id - 1,  будет использоваться в дальнейшем
+        возрващаем значение id   будет использоваться в дальнейшем
         :param name:
         :param phone:
         :param comment:
         :return:
         """
+        self.next_id += 1
         self.contacts.append([self.next_id,name,phone,comment])
-        self.next_id+=1
+        self._save_to_csv()
 
-        return self.next_id - 1
+        return self.next_id
 
     def all_contacts(self) -> list:
         """Возвращаем список с контактами"""
@@ -72,3 +83,45 @@ class Model:
             return True
         else:
             return False
+    def _reader(self) -> list:
+        """
+        Метод ридера из csv файла
+        :return:  возвращает лист значений построчно
+        """
+        with open(self.filename, 'r', encoding='utf-8', newline='') as file:
+            reader = csv.reader(file)
+            return list(reader)
+
+    def _save_to_csv(self):
+        """
+        Сохраняем из буфера в файл
+        :return:
+        """
+        with open(self.filename, 'w', encoding='utf-8', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(self.contacts)
+
+    def _delete_contact(self,id: int) -> str:
+        """
+        перезаписываем значения за исключением удаляемого id
+        :param id:
+        :return:
+        """
+        if int(id) > int(self.contacts[-1][0]):
+            return f'Введен id  превышающий максимальный'
+        temp_list = []
+        for row in self.contacts:
+            if row[0] == id:
+                pass
+            else:
+                temp_list.append(row)
+        self.contacts = temp_list.copy()
+        self._save_to_csv()
+        flag = True
+        for row in self.contacts:
+            if row[0] == id:
+                flag = False
+        if flag:
+            return f'удаление прошло успешно'
+        else:
+            return f'при удалении что то пошло не так'
