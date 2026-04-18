@@ -34,3 +34,14 @@ class View:
         comment = input("Введите комментарий: ")
         return comment
 
+    @staticmethod
+    def show_message(msg):
+        print(msg)
+
+    @staticmethod
+    def show_all_contacts(contacts):
+        for item in contacts:
+            print(f'{item[0]} - {item[1]} - {item[2]} - {item[3]}')
+
+
+
