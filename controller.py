@@ -33,7 +33,7 @@ class Controller:
         :return:
         """
         contacts = self.model.all_contacts()
-        self.view.show_all_contacts(contacts)
+        self.view.show_contacts(contacts)
 
     def run(self) -> None:
         """Метод для запуска """
@@ -43,18 +43,41 @@ class Controller:
 
             if choice == '1':
                 contacts = self.model.all_contacts()
-                self.view.show_all_contacts(contacts)
+                self.view.show_contacts(contacts)
             elif choice == '2':
                 information = self.add()
                 self.view.show_message(information)
             elif choice == '3':
-                id = self.view.delete_contact()
+                id = self.view.get_id_contact()
                 msg = self.model._delete_contact(id)
                 self.view.show_message(msg)
-
             elif choice == '4':
+                id = self.view.get_id_contact()
+                if self.model._check_id(id):
+                    name = self.view.get_name()
+                    phone = self.view.get_phone()
+                    comment = self.view.get_comment()
+                    msg = self.model._update_contact(id,name,phone,comment)
+                else:
+                    msg = 'Данного id  нет  в списках'
+
+                self.view.show_message(msg)
+            elif choice == '5':
+                name = self.view.get_name()
+                search_list = self.model._search_in_name(name)
+                if len(search_list) > 0:
+                    msg = 'Найденые контакты'
+                    self.view.show_message(msg)
+                    self.view.show_contacts(search_list)
+
+                else:
+                    msg = 'Контакты не найдены'
+                    self.view.show_message(msg)
+
+
+            elif choice == '6':
                 break
-            elif choice not in ['1','2','3','4']:
+            elif choice not in ['1','2','3','4','5', '6']:
                 print('Действие выбрано неверно')
 
 

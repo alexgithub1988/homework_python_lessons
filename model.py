@@ -141,3 +141,30 @@ class Model:
             return f'удаление прошло успешно'
         else:
             return f'при удалении что то пошло не так'
+
+    def _update_contact(self,id:str,name:str,phone:str,comment:str) -> str:
+        flag = self._check_id(id)
+        if flag:
+            pass
+        else:
+            return 'Данного id  нет в котактах'
+        temp = []
+        for i in self.contacts:
+            if i[0] == id:
+                temp.append([id,name,phone,comment])
+            else:
+                temp.append(i)
+        self.contacts = temp.copy()
+        self._save_to_csv()
+        return 'Контакт обновлен'
+
+    def _search_in_name(self,name:str) -> list:
+        temp_list = []
+        for row in self.contacts:
+
+            if name.lower() in row[1].lower():
+                temp_list.append(row)
+
+        return temp_list
+
+
