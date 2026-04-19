@@ -101,14 +101,33 @@ class Model:
             writer = csv.writer(file)
             writer.writerows(self.contacts)
 
-    def _delete_contact(self,id: int) -> str:
+    def _check_id(self,id:str) -> bool:
+        """
+        Проверка есть ли id
+        :return:
+        """
+        flag = False
+        for row in self.contacts:
+            if row[0] == id:
+                flag = True
+        return flag
+
+
+    def _delete_contact(self,id: str) -> str:
         """
         перезаписываем значения за исключением удаляемого id
+        + делаем проверки на некоторые неправильные id
         :param id:
         :return:
         """
         if int(id) > int(self.contacts[-1][0]):
             return f'Введен id  превышающий максимальный'
+        flag = self._check_id(id)
+        if flag:
+            pass
+        else:
+            return f'Данного id  нет в контактах'
+
         temp_list = []
         for row in self.contacts:
             if row[0] == id:
@@ -117,10 +136,7 @@ class Model:
                 temp_list.append(row)
         self.contacts = temp_list.copy()
         self._save_to_csv()
-        flag = True
-        for row in self.contacts:
-            if row[0] == id:
-                flag = False
+        flag = self._check_id(id)
         if flag:
             return f'удаление прошло успешно'
         else:
