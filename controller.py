@@ -73,11 +73,61 @@ class Controller:
                 else:
                     msg = 'Контакты не найдены'
                     self.view.show_message(msg)
-
-
             elif choice == '6':
+                phone = self.view.get_phone()
+                search_list = self.model._search_in_phone(phone)
+                if len(search_list) > 0:
+                    msg = 'Найдены  контакты'
+                    self.view.show_message(msg)
+                    self.view.show_contacts(search_list)
+                else:
+                    msg = 'Контакты не найдены'
+                    self.view.show_message(msg)
+            elif choice == '7':
+                comment = self.view.get_comment()
+                search_list = self.model._search_in_comment(comment)
+                if len(search_list) > 0:
+                    msg = 'Найдены  контакты'
+                    self.view.show_message(msg)
+                    self.view.show_contacts(search_list)
+                else:
+                    msg = 'Контакты не найдены'
+                    self.view.show_message(msg)
+
+            elif choice == '8':
+                name = self.view.get_name()
+                search_list = self.model._search_name(name)
+                if len(search_list) > 0:
+                    msg = 'Найдены  контакты'
+                    self.view.show_message(msg)
+                    self.view.show_contacts(search_list)
+                else:
+                    msg = 'Контакты не найдены'
+                    self.view.show_message(msg)
+            elif choice == '9':
+                phone = self.view.get_phone()
+                search_list = self.model._search_phone(phone)
+                if len(search_list) > 0:
+                    msg = 'Найдены  контакты'
+                    self.view.show_message(msg)
+                    self.view.show_contacts(search_list)
+                else:
+                    msg = 'Контакты не найдены'
+                    self.view.show_message(msg)
+            elif choice == '10':
+                comment = self.view.get_comment()
+                search_list = self.model._search_in_comment(comment)
+                if len(search_list) > 0:
+                    msg = 'Найдены  контакты'
+                    self.view.show_message(msg)
+                    self.view.show_contacts(search_list)
+                else:
+                    msg = 'Контакты не найдены'
+                    self.view.show_message(msg)
+
+            elif choice == '11':
                 break
-            elif choice not in ['1','2','3','4','5', '6']:
+            elif choice not in ['1','2','3','4','5', '6', '7', '8', '9','10','11']:
                 print('Действие выбрано неверно')
 
 

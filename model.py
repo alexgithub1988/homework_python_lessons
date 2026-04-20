@@ -159,6 +159,11 @@ class Model:
         return 'Контакт обновлен'
 
     def _search_in_name(self,name:str) -> list:
+        """
+        Получаем имя возвращаем лист который покажем пользователю после обработки
+        :param name:
+        :return:
+        """
         temp_list = []
         for row in self.contacts:
 
@@ -166,5 +171,65 @@ class Model:
                 temp_list.append(row)
 
         return temp_list
+
+    def _search_in_phone(self,phone:str) -> list:
+        """получаем телефон отдаем лист вхождений"""
+        temp_list = []
+        for row in self.contacts:
+
+            if phone.lower() in row[2].lower():
+                temp_list.append(row)
+
+        return temp_list
+
+    def _search_in_comment(self,comment:str) -> list:
+        """
+        Получаем часть комментария выводим совпадения
+        :param comment:
+        :return:
+        """
+        temp_list = []
+        for row in self.contacts:
+
+            if comment.lower() in row[3].lower():
+                temp_list.append(row)
+
+        return temp_list
+
+    def _search_name(self,name:str) -> list:
+        """
+        Получаем точное имя, отдаем вхождения
+        :param name:
+        :return:
+        """
+        temp_list = []
+        for row in self.contacts:
+
+            if name.lower() == row[1].lower():
+                temp_list.append(row)
+        return temp_list
+
+    def _search_phone(self, phone: str) -> list:
+        temp_list = []
+        for row in self.contacts:
+
+                if phone.lower() == row[2].lower():
+                    temp_list.append(row)
+        return temp_list
+
+    def _search_comment(self,comment:str) -> list:
+        """
+        Получаем точный  комментария отдаем значения
+        :param comment:
+        :return:
+        """
+        temp_list = []
+        for row in self.contacts:
+
+            if comment.lower() == row[3].lower():
+                temp_list.append(row)
+        return temp_list
+
+
 
 
