@@ -1,5 +1,7 @@
 from view import View
 from model import Model
+from exceptions import InvalidContactDataError,ContactNotFoundError
+
 
 class Controller:
     def __init__(self, filename) -> None:
@@ -10,6 +12,8 @@ class Controller:
         self.view = View()
         self.model = Model(filename)
 
+
+
     def add(self) -> str:
         """
         Тут получаем  из view введеные параметрами.
@@ -18,11 +22,15 @@ class Controller:
 
         :return:
         """
-        name = self.view.get_name()
-        phone = self.view.get_phone()
-        comment = self.view.get_comment()
-        contact_id = self.model.add_contact(name, phone, comment)
-        return f'Добавлен контакт с id {contact_id},{name},{phone},{comment}'
+        try:
+            name = self.view.get_name()
+            phone = self.view.get_phone()
+            comment = self.view.get_comment()
+            contact_id = self.model.add_contact(name, phone, comment)
+            return f'Добавлен контакт с id {contact_id},{name},{phone},{comment}'
+
+        except InvalidContactDataError as e:
+            return str(e)
 
     def show_all_contacts(self):
         """
@@ -49,19 +57,21 @@ class Controller:
                 self.view.show_message(information)
             elif choice == '3':
                 id = self.view.get_id_contact()
-                msg = self.model._delete_contact(id)
-                self.view.show_message(msg)
+                try:
+                    msg = self.model._delete_contact(id)
+                    self.view.show_message(msg)
+                except ContactNotFoundError as e:
+                    self.view.show_message(str(e))
             elif choice == '4':
                 id = self.view.get_id_contact()
-                if self.model._check_id(id):
+                try:
                     name = self.view.get_name()
                     phone = self.view.get_phone()
                     comment = self.view.get_comment()
-                    msg = self.model._update_contact(id,name,phone,comment)
-                else:
-                    msg = 'Данного id  нет  в списках'
-
-                self.view.show_message(msg)
+                    msg = self.model._update_contact(id, name, phone, comment)
+                    self.view.show_message(msg)
+                except ContactNotFoundError as e:
+                    self.view.show_message(str(e))
             elif choice == '5':
                 name = self.view.get_name()
                 search_list = self.model._search_in_name(name)
@@ -116,7 +126,7 @@ class Controller:
                     self.view.show_message(msg)
             elif choice == '10':
                 comment = self.view.get_comment()
-                search_list = self.model._search_in_comment(comment)
+                search_list = self.model._search_comment(comment)
                 if len(search_list) > 0:
                     msg = 'Найдены  контакты'
                     self.view.show_message(msg)

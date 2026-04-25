@@ -1,5 +1,6 @@
 import csv
 from pathlib import Path
+from exceptions import ContactNotFoundError,InvalidContactDataError
 
 
 class Model:
@@ -54,6 +55,8 @@ class Model:
         :param comment:
         :return:
         """
+        if not name or not phone:
+            raise InvalidContactDataError("Имя и телефон не могут быть пустыми")
         self.next_id += 1
         self.contacts.append([self.next_id,name,phone,comment])
         self._save_to_csv()
@@ -121,33 +124,24 @@ class Model:
         :return:
         """
         if int(id) > int(self.contacts[-1][0]):
-            return f'Введен id  превышающий максимальный'
-        flag = self._check_id(id)
-        if flag:
-            pass
-        else:
-            return f'Данного id  нет в контактах'
+            raise ContactNotFoundError("Введен id превышающий максимальный")
+        if not self._check_id(id):
+            raise ContactNotFoundError("Данного id нет в контактах")
 
         temp_list = []
         for row in self.contacts:
-            if row[0] == id:
-                pass
-            else:
+            if row[0] != id:
                 temp_list.append(row)
         self.contacts = temp_list.copy()
         self._save_to_csv()
-        flag = self._check_id(id)
-        if flag:
-            return f'удаление прошло успешно'
-        else:
-            return f'при удалении что то пошло не так'
+        return "удаление прошло успешно"
 
     def _update_contact(self,id:str,name:str,phone:str,comment:str) -> str:
         flag = self._check_id(id)
         if flag:
             pass
         else:
-            return 'Данного id  нет в котактах'
+            raise ContactNotFoundError("Контакт не найден по id")
         temp = []
         for i in self.contacts:
             if i[0] == id:

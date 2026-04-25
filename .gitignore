@@ -15,6 +15,7 @@ env/
 *.swo
 
 # Project files
+spavochnik.csv
 test.csv
 id.txt
 test_folder/

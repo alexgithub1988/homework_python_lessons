@@ -39,8 +39,13 @@ class View:
         """Получаем телефон
         :return: возвращаем телефон в виде строки
         """
-        phone = input("Введите телефон: ")
-        return phone
+        while True:
+            phone = input("Введите телефон: ")
+            if phone.isdigit():
+                return phone
+            else:
+                print('Телефон не корректен, значения должны быть из цифр')
+
 
     @staticmethod
     def get_comment() -> str:
@@ -79,7 +84,7 @@ class View:
         id = input("Введите id  контакта: ")
         try:
             temp = int(id)
-            del temp
+
             return id
         except:
             print("Нужно ввести числовое значение")
