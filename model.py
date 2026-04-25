@@ -57,11 +57,12 @@ class Model:
         """
         if not name or not phone:
             raise InvalidContactDataError("Имя и телефон не могут быть пустыми")
-        self.next_id += 1
+
         self.contacts.append([self.next_id,name,phone,comment])
         self._save_to_csv()
+        self.next_id += 1
 
-        return self.next_id
+        return self.next_id -1
 
     def all_contacts(self) -> list:
         """Возвращаем список с контактами"""
