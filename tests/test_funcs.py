@@ -21,6 +21,14 @@ def cleanup():
     if Path(test_file).exists():
         os.remove(test_file)
 
+def test_file_created(cleanup):
+    """
+    Тестируем создание файла
+    :param cleanup:
+    :return:
+    """
+    assert Path(test_file).exists()
+
 @pytest.fixture
 def create_data(cleanup):
     """
